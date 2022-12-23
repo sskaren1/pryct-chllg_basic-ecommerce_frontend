@@ -1,8 +1,14 @@
+// import layouts
+import { MainLayout } from './../components/layouts/MainLayout';
+// import components
+import { EmptyCart } from './../components/cart'
 
 export default function Home() {
   return (
     <>
-      <h1>Next</h1>
+      <MainLayout title={'Riqra Shop - Home'} pageDescription={'Tienda Online Riqra'}>
+        <EmptyCart />
+      </MainLayout>
     </>
-  )
+  );
 }
