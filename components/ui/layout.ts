@@ -22,18 +22,28 @@ export const Box = styled.div`
     height: 100%;
     background-color: var(--neutral-2);
 `
+export const BoxAuto = styled.div`
+    width: 100%;
+    height: auto;
+    background-color: var(--neutral-2);
+`
 export const GridCol = styled.div`
     display: grid;
     grid-template-rows: unset;
-    column-gap: 2rem;
+    column-gap: 3rem;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;//para centrar verticalmente
     justify-items: center;//para centrar horizontalmente
     grid-auto-flow: column;  
 `
-export const FlexCol = styled.div`
+export const Flex = styled.div`
+    width: 100%;
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between; 
     align-items:center;
-    column-gap: 3rem;
+`
+export const FlexGap = styled.div`
+    display: flex;
+    align-items:center;
+    column-gap: 1rem;
 `

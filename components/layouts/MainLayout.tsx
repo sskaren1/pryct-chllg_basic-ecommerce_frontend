@@ -3,7 +3,7 @@ import { FC } from "react";
 // import next
 import Head from "next/head";
 // import components
-import { Summary } from "./../cart/summary";
+import { Summary } from "./../cart";
 // import styles components
 import { Container, GridCol, Box } from "../ui/layout";
 import { Input } from "../ui/form";
