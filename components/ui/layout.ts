@@ -27,7 +27,7 @@ export const BoxAuto = styled.div`
     height: auto;
     background-color: var(--neutral-2);
 `
-export const GridCol = styled.div`
+export const GridCol2 = styled.div`
     display: grid;
     grid-template-rows: unset;
     column-gap: 3rem;
@@ -36,9 +36,26 @@ export const GridCol = styled.div`
     justify-items: center;//para centrar horizontalmente
     grid-auto-flow: column;  
 `
+export const GridCol3 = styled.div`
+    display: grid;
+    grid-template-rows: unset;
+    column-gap: 3rem;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;//para centrar verticalmente
+    justify-items: center;//para centrar horizontalmente
+    grid-auto-flow: column;  
+`
 export const Flex = styled.div`
     width: 100%;
     display: flex;
+    justify-content: space-between; 
+    align-items:center;
+`
+export const FlexCol = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between; 
     align-items:center;
 `

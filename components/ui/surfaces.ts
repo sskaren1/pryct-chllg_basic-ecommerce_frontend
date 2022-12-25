@@ -6,5 +6,5 @@ export const Card = styled.div`
     border-bottom-width: 2px;
     border-bottom-style: solid;
     border-bottom-color: var(--color-8);
-    padding: 2rem 0;
+    padding: 3rem 0 2rem;
 `

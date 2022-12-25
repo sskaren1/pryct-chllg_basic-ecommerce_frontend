@@ -5,7 +5,7 @@ import Head from "next/head";
 // import components
 import { Summary } from "./../cart";
 // import styles components
-import { Container, GridCol, Box } from "../ui/layout";
+import { Container, GridCol2, Box } from "../ui/layout";
 import { Input } from "../ui/form";
 // import css modules
 import styles from "./mainLayout.module.css";
@@ -35,19 +35,19 @@ export const MainLayout: FC<Props> = ({
 
       <main className={styles.main}>
         <Container>
-          <GridCol className={styles.search}>
+          <GridCol2 className={styles.search}>
             <Input
               type="search"
               id="inputSearch"
               placeholder="Search Products"
               required
             />
-          </GridCol>
+          </GridCol2>
 
-          <GridCol className={styles.gridFull}>
-            <Box className={styles.emptyCart}>{children}</Box>
+          <GridCol2 className={styles.gridFull}>
+            <Box className={styles.children}>{children}</Box>
             <Summary />
-          </GridCol>
+          </GridCol2>
         </Container>
       </main>
     </>
