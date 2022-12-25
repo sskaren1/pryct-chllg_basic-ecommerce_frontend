@@ -5,7 +5,7 @@ import Head from "next/head";
 // import components
 import { Summary } from "./../cart";
 // import styles components
-import { Container, GridCol2, Box } from "../ui/layout";
+import { Main, Container, GridCol2, Box } from "../ui/layout";
 import { Input } from "../ui/form";
 // import css modules
 import styles from "./mainLayout.module.css";
@@ -33,7 +33,7 @@ export const MainLayout: FC<Props> = ({
         {imageFullUrl && <meta name="og:image" content={imageFullUrl} />}
       </Head>
 
-      <main className={styles.main}>
+      <Main>
         <Container>
           <GridCol2 className={styles.search}>
             <Input
@@ -46,10 +46,10 @@ export const MainLayout: FC<Props> = ({
 
           <GridCol2 className={styles.gridFull}>
             <Box className={styles.children}>{children}</Box>
-            <Summary />
+            <Summary disabled={false} />
           </GridCol2>
         </Container>
-      </main>
+      </Main>
     </>
   );
 };

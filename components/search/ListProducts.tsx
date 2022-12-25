@@ -1,22 +1,22 @@
 // import next
 import Image from "next/image";
-// import styled components
-import { Container, GridCol3, FlexCol } from './../ui/layout'
-import { ButtonCircle } from './../ui/form'
-import { Card } from './../ui/surfaces'
-import { TextRedProd, TextBold } from './../ui/typography'
 // import images
-import iconOrdenCompleta from "./../../public/images/icon_orden_completa.png";
+import iconCompleteOrder from "./../../public/images/icon_orden_completa.png";
 import iconPlus from "./../../public/images/icon_plus.png";
+// import styled components
+import { PropsFlex, Container, GridCol3, FlexCol } from './../ui/layout';
+import { ButtonCircle } from './../ui/form';
+import { Card } from './../ui/surfaces';
+import { TextRedProd, TextBold } from './../ui/typography';
 
-export const ListProducts = () => {
+export const ListProducts = ({ justifyContent, height }: PropsFlex) => {
   return (
     <>
         <Card>
             <Container>
               <GridCol3>
-                <Image src={iconOrdenCompleta.src} width={300} height={200} alt="order complete" />
-                <FlexCol>
+                <Image src={iconCompleteOrder.src} width={300} height={200} alt="complete order" />
+                <FlexCol height={"auto"} justifyContent={""}>
                   <TextBold>Yogurt Laive</TextBold>
                   <TextRedProd>$100.00</TextRedProd>
                 </FlexCol>
@@ -29,8 +29,8 @@ export const ListProducts = () => {
         <Card>
             <Container>
               <GridCol3>
-                <Image src={iconOrdenCompleta.src} width={300} height={200} alt="order complete" />
-                <FlexCol>
+                <Image src={iconCompleteOrder.src} width={300} height={200} alt="complete order" />
+                <FlexCol height={""} justifyContent={""}>
                   <TextBold>Yogurt Laive</TextBold>
                   <TextRedProd>$100.00</TextRedProd>
                 </FlexCol>
@@ -43,8 +43,8 @@ export const ListProducts = () => {
         <Card>
             <Container>
               <GridCol3>
-                <Image src={iconOrdenCompleta.src} width={300} height={200} alt="order complete" />
-                <FlexCol>
+                <Image src={iconCompleteOrder.src} width={300} height={200} alt="complete order" />
+                <FlexCol height={""} justifyContent={""}>
                   <TextBold>Yogurt Laive</TextBold>
                   <TextRedProd>$100.00</TextRedProd>
                 </FlexCol>
