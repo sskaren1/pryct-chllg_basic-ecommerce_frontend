@@ -5,15 +5,18 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'i.ibb.co',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+    domains: ['i.ibb.co']
   }
+  // images: {
+  //   remotePatterns: [
+  //     {
+  //       protocol: 'https',
+  //       hostname: 'i.ibb.co',
+  //       port: '',
+  //       pathname: '/**',
+  //     },
+  //   ],
+  // }
 }
 
 module.exports = nextConfig

@@ -15,7 +15,7 @@ export const ListProducts = ({ justifyContent, height }: PropsFlex) => {
         <Card>
             <Container>
               <GridCol3>
-                <Image src={iconCompleteOrder.src} width={300} height={200} alt="complete order" />
+                <Image src={"https://i.ibb.co/X7793Mx/yogurt-gloria.jpg"} width={300} height={200} alt="complete order" />
                 <FlexCol height={"auto"} justifyContent={""}>
                   <TextBold>Yogurt Laive</TextBold>
                   <TextRedProd>$100.00</TextRedProd>

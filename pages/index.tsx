@@ -9,8 +9,8 @@ export default function Home() {
     <>
       <MainLayout title={'Riqra Shop - Home'} pageDescription={'Tienda Online Riqra'}>
         {/* <FullCart justifyContent={''} height={''} /> */}
-        {/* <ListProducts /> */}
-        <EmptyCart />
+        {/* <ListProducts justifyContent={''} height={''} /> */}
+        <EmptyCart rowGap={''} />
       </MainLayout>
     </>
   );
