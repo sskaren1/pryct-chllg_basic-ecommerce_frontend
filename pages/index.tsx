@@ -130,24 +130,24 @@ const Home: FC<Props> = ({ disabled }) => {
   };
 
   // Para agregar o modificar la cantidad del producto seleccionado
-  const addOrRemoveProduct = (product: IProduct, add: boolean) => {
-    const listProducts = listProduct.map((prd) => {
-      if (prd.id === product.id) {
-        if (add) {
-          prd.quantity += 1;
-        } else {
-          if (product.quantity > 1) {
-            product.quantity -= 1;
-          }
-        }
-      }
-      return {
-        ...product,
-      };
-    });
-    setListProduct(listProducts);
-    // localStorage.setItem("producto", JSON.stringify(products));
-  };
+  // const addOrRemoveProduct = (product: IProduct, add: boolean) => {
+  //   const listProducts = listProduct.map((prd) => {
+  //     if (prd.id === product.id) {
+  //       if (add) {
+  //         prd.quantity += 1;
+  //       } else {
+  //         if (product.quantity > 1) {
+  //           product.quantity -= 1;
+  //         }
+  //       }
+  //     }
+  //     return {
+  //       ...product,
+  //     };
+  //   });
+  //   setListProduct(listProducts);
+  //   // localStorage.setItem("producto", JSON.stringify(products));
+  // };
 
   // Para calcular el precio total por los productos
   const calculatePriceTotal = () => {
