@@ -119,7 +119,7 @@ const Home: FC<Props> = ({ disabled }) => {
       quantity:1
     }
 
-    const filter = listProduct.filter((prd) => prd.id !== "0"); 
+    const filter = listProduct.filter((prd) => prd.product.id !== "0"); 
     setListProduct([newPrd, ...filter]);      
   };
 
