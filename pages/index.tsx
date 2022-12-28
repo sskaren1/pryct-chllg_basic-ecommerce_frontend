@@ -125,7 +125,7 @@ const Home: FC<Props> = ({ disabled }) => {
 
   // Para remover el producto seleccionado del carrito
   const removeProduct = (product: IProduct) => {
-    const filter = listProduct.filter((prd) => prd.id !== product.id);
+    const filter = listProduct.filter((prd) => prd.product.id !== product.id);
     setListProduct(filter);      
   };
 
@@ -170,7 +170,6 @@ const Home: FC<Props> = ({ disabled }) => {
     setTotal(Number(sumTotal.toFixed(2)))  
   };
 
- 
 
   useEffect(()=>{
     clean()
@@ -179,6 +178,7 @@ const Home: FC<Props> = ({ disabled }) => {
     calculatePriceTotal()
   },[listProduct])
 
+  const classModal = modal ? "is-active" : "";
   return (
     <>
       <Head>
@@ -216,58 +216,89 @@ const Home: FC<Props> = ({ disabled }) => {
                   {search.length == 0 ? (
                     // list of products in the cart
                     listProduct.length > 0 ? (
-                      listProduct.map((product: IProduct) => ( 
-                        <Card key={product.product.id}>
-                          <Container>
-                            <GridCol3>
-                              <Image
-                                src={product.product.image}
-                                width={300}
-                                height={200}
-                                alt="order complete"
-                              />
-                              <FlexCol
-                                height={""}
-                                justifyContent={""}
-                                alignItems={"left"}
-                              >
-                                <Text
-                                  textAlign={""}
-                                  fontWeight={400}
-                                  color={""}
-                                  fontSize={"1.8rem"}
+                      listProduct.map((product: newIProduct) => ( 
+                        <>
+                          <Card key={product.product.id}>
+                            <Container>
+                              <GridCol3>
+                                <Image
+                                  src={product.product.image}
+                                  width={300}
+                                  height={200}
+                                  alt="order complete"
+                                />
+                                <FlexCol
+                                  height={""}
+                                  justifyContent={""}
+                                  alignItems={"left"}
                                 >
-                                  {product.product.name}
-                                </Text>
-                                <Text
-                                  textAlign={""}
-                                  fontWeight={600}
-                                  color={"#FF2D55"}
-                                  fontSize={"2.6rem"}
+                                  <Text
+                                    textAlign={""}
+                                    fontWeight={400}
+                                    color={""}
+                                    fontSize={"1.8rem"}
+                                  >
+                                    {product.product.name}
+                                  </Text>
+                                  <Text
+                                    textAlign={""}
+                                    fontWeight={600}
+                                    color={"#FF2D55"}
+                                    fontSize={"2.6rem"}
+                                  >
+                                    ${product.product.price}
+                                  </Text>
+                                </FlexCol>
+                                <FlexCol
+                                  height={""}
+                                  justifyContent="space-around"
+                                  alignItems={""}
                                 >
-                                  ${product.product.price}
-                                </Text>
-                              </FlexCol>
-                              <FlexCol
-                                height={""}
-                                justifyContent="space-around"
-                                alignItems={""}
+                                  <ButtonCircle onClick={() => onCart(product.product)}>1</ButtonCircle>
+                                  <button className={styles.btnDelete} onClick={() => removeProduct(product.product)}>
+                                    delete
+                                  </button>
+                                </FlexCol>
+                              </GridCol3>
+                            </Container>
+                          </Card>
+
+                          <BoxSquare className="is-active">
+                            <Flex height={"auto"} justifyContent={""} alignItems={""}>
+                              <button>
+                                <Image
+                                  src={iconMinus.src}
+                                  width={100}
+                                  height={100}
+                                  alt="icon minus"
+                                />
+                              </button>
+                              <Text
+                                textAlign={""}
+                                fontWeight={400}
+                                color={"#fff"}
+                                fontSize={"2rem"}
                               >
-                                <ButtonCircle onClick={() => onCart(product)}>1</ButtonCircle>
-                                <button className={styles.btnDelete} onClick={() => removeProduct(product)}>
-                                  delete
-                                </button>
-                              </FlexCol>
-                            </GridCol3>
-                          </Container>
-                        </Card>
+                                5
+                              </Text>
+                              <button>
+                                <Image
+                                  src={iconPlus.src}
+                                  width={100}
+                                  height={100}
+                                  alt="icon plus"
+                                />
+                              </button>
+                            </Flex>
+                          </BoxSquare>
+                        </>
                       ))
                     ) : (
                       <EmptyCart rowGap={""} />
                     )
                   ) : (
                     // list of searched products
-                    searchedProduct.map((product: any) => (
+                    searchedProduct.map((product: IProduct) => (
                       <Card key={product.id}>
                         <Container>
                           <GridCol3>
@@ -327,36 +358,7 @@ const Home: FC<Props> = ({ disabled }) => {
                       </Card>
                     ))
                   )}
-                </Box>
-
-                {/* <BoxSquare>
-                  <Flex height={"auto"} justifyContent={""} alignItems={""}>
-                    <button>
-                      <Image
-                        src={iconMinus.src}
-                        width={100}
-                        height={100}
-                        alt="icon minus"
-                      />
-                    </button>
-                    <Text
-                      textAlign={""}
-                      fontWeight={400}
-                      color={"#fff"}
-                      fontSize={"2rem"}
-                    >
-                      5
-                    </Text>
-                    <button>
-                      <Image
-                        src={iconPlus.src}
-                        width={100}
-                        height={100}
-                        alt="icon plus"
-                      />
-                    </button>
-                  </Flex>
-                </BoxSquare> */}
+                </Box>               
 
                 {/* summary */}
                 <div className={styles.summary}>
