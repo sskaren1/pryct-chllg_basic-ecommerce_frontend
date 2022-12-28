@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export interface PropsFlex {
   justifyContent: string;
+  alignItems: string;
   height: string;
 }
 export interface PropsContainer {
@@ -82,7 +83,7 @@ export const FlexCol = styled.div<PropsFlex>`
   display: flex;
   flex-direction: column;
   justify-content: ${(props) => props.justifyContent || "space-between"};
-  align-items: left;
+  align-items:  ${(props) => props.alignItems || "center"};
 `;
 export const FlexGap = styled.div`
   display: flex;

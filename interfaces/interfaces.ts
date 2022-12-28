@@ -9,6 +9,9 @@ export interface IProduct {
   name: string;
   price: number;
   image: string;
+}
+export interface newIProduct {
+  product: IProduct;
   quantity: number;
 }
 export interface ICartProduct {
