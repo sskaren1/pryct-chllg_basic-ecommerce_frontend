@@ -9,7 +9,10 @@ import { ButtonCircle } from './../ui/form';
 import { Card } from './../ui/surfaces';
 import { TextRedProd, TextBold } from './../ui/typography';
 
+
 export const ListProducts = ({ justifyContent, height }: PropsFlex) => {
+  // console.log(products);
+
   return (
     <>
         <Card>

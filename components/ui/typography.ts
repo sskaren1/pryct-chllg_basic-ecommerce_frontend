@@ -20,14 +20,3 @@ export const Span = styled.span<PropsTyph>`
   color: ${(props) => props.color || "#333333" };
   font-size: ${(props) => props.fontSize || "1.6rem"};
 `;
-export const TextCenter = styled.p`
-  text-align: center;
-`;
-export const TextBold = styled.p`
-  font-weight: var(--semi-bold);
-`;
-export const TextRedProd = styled.p`
-  font-weight: var(--semi-bold);
-  color: var(--color-4);
-  font-size: 2.6rem;
-`;

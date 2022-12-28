@@ -82,7 +82,7 @@ export const FlexCol = styled.div<PropsFlex>`
   display: flex;
   flex-direction: column;
   justify-content: ${(props) => props.justifyContent || "space-between"};
-  align-items: center;
+  align-items: left;
 `;
 export const FlexGap = styled.div`
   display: flex;
