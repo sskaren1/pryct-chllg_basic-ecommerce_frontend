@@ -3,10 +3,10 @@ import { useState, useEffect, FC } from "react";
 // import next
 import Head from "next/head";
 import Image from "next/image";
+import Link from 'next/link'
 // import apollo client
 import { useQuery, gql } from "@apollo/client";
 // import images
-import iconCompleteOrder from "./../public/images/icon_orden_completa.png";
 import iconPlus from "./../public/images/icon_plus.png";
 import iconMinus from "./../public/images/icon_minus.png";
 import cartBlue from "./../public/images/icon_carrito-azul.png";
@@ -23,7 +23,7 @@ import {
   BoxAuto,
   BoxSquare,
 } from "../components/ui/layout";
-import { Input, ButtonCircle, Button } from "../components/ui/form";
+import { PropsButton,  Input, ButtonCircle, Button } from "../components/ui/form";
 import { Card } from "../components/ui/surfaces";
 import { PropsTyph, Text, Span } from "../components/ui/typography";
 // import css modules
@@ -32,7 +32,7 @@ import styles from "./home.module.css";
 import { FullScreenLoading } from "./../components/ui/FullScreenLoading";
 import { EmptyCart } from "./../components/cart";
 // import interfaces
-import { IProduct, newIProduct, ICartProduct } from "./../interfaces/interfaces";
+import { IProduct, newIProduct, disabledBtn } from "./../interfaces/interfaces";
 
 const GET_PRODUCTS = gql`
   query getProducts {
@@ -45,11 +45,11 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-interface Props {
-  disabled: boolean;
-}
+// interface Props {
+//   disabledBtn: boolean;
+// }
 
-const Home: FC<Props> = ({ disabled }) => {
+const Home = () => {
   // get products of Graphql
   const { data, loading, error } = useQuery(GET_PRODUCTS);
 
@@ -76,13 +76,25 @@ const Home: FC<Props> = ({ disabled }) => {
   const [taxes, setTaxes] = useState(0);
   const [total, setTotal] = useState(0);
   // Para el modal de agregar y quitar productos
-  const [modal, setModal] = useState(true);
-
+  const [modal, setModal] = useState(false);
+  // Para obtener fecha de envío
+  const [shippingDate, setShippingDate] = useState("");
+  // Para habilitar completar la orden
+  const [enblOrder, setEnblOrder] = useState(true);
+  
+  // Para el modal 
   const HandleModal = () => {
     if (modal == true) {
       setModal(false);
     } else {
       setModal(true);
+    }
+  };
+  const handleClickOutside = (e:any) => {
+    if(e.target.className == "modal__"){
+      setModal(true)
+    } else {
+      setModal(false)
     }
   };
 
@@ -130,24 +142,24 @@ const Home: FC<Props> = ({ disabled }) => {
   };
 
   // Para agregar o modificar la cantidad del producto seleccionado
-  // const addOrRemoveProduct = (product: IProduct, add: boolean) => {
-  //   const listProducts = listProduct.map((prd) => {
-  //     if (prd.id === product.id) {
-  //       if (add) {
-  //         prd.quantity += 1;
-  //       } else {
-  //         if (product.quantity > 1) {
-  //           product.quantity -= 1;
-  //         }
-  //       }
-  //     }
-  //     return {
-  //       ...product,
-  //     };
-  //   });
-  //   setListProduct(listProducts);
-  //   // localStorage.setItem("producto", JSON.stringify(products));
-  // };
+  const addOrRemoveProduct = (id: string, add: boolean) => {    
+    const listProducts = listProduct.map((prd: newIProduct) => {
+      if (prd.product.id === id) {
+        if (add) {
+          prd.quantity += 1;
+        } else {
+          if (prd.quantity > 1) {
+            prd.quantity -= 1;
+          }
+        }
+      }
+      return {
+        ...prd,
+      };
+    });
+    setListProduct(listProducts);
+    // console.log(listProduct)
+  };
 
   // Para calcular el precio total por los productos
   const calculatePriceTotal = () => {
@@ -170,6 +182,28 @@ const Home: FC<Props> = ({ disabled }) => {
     setTotal(Number(sumTotal.toFixed(2)))  
   };
 
+  // Obtener el año actual
+  const dateOrder = () => {
+    let currentTime = new Date();
+    let day = currentTime.getDate()
+    let month = currentTime.getMonth() + 1
+    let year = currentTime.getFullYear();  
+    if(month < 10){
+      setShippingDate(`${day}-0${month}-${year}`)
+    }else{
+      setShippingDate(`${day}-${month}-${year}`)
+    }
+  }
+
+  // Para habilitar completar la orden
+  const enableOrder = () =>{
+    console.log("total",total)
+    if (total >= 50){
+      setEnblOrder(false)
+    } else{
+      setEnblOrder(true)
+    }
+  }
 
   useEffect(()=>{
     clean()
@@ -177,8 +211,23 @@ const Home: FC<Props> = ({ disabled }) => {
   useEffect(()=>{
     calculatePriceTotal()
   },[listProduct])
+  useEffect(()=>{
+    dateOrder()
+  },[])
+  useEffect(()=>{
+    enableOrder()
+  },[total])
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  });
 
-  const classModal = modal ? "is-active" : "";
+  const classModal = modal ? "isActive" : "noActive";
+  const classFlexBtn = modal ? "noActive" : "isActive";
+  const classOpacity = modal ? "opacity" : "";
+
   return (
     <>
       <Head>
@@ -217,81 +266,83 @@ const Home: FC<Props> = ({ disabled }) => {
                     // list of products in the cart
                     listProduct.length > 0 ? (
                       listProduct.map((product: newIProduct) => ( 
-                        <>
-                          <Card key={product.product.id}>
-                            <Container>
-                              <GridCol3>
-                                <Image
-                                  src={product.product.image}
-                                  width={300}
-                                  height={200}
-                                  alt="order complete"
-                                />
-                                <FlexCol
-                                  height={""}
-                                  justifyContent={""}
-                                  alignItems={"left"}
-                                >
-                                  <Text
-                                    textAlign={""}
-                                    fontWeight={400}
-                                    color={""}
-                                    fontSize={"1.8rem"}
-                                  >
-                                    {product.product.name}
-                                  </Text>
-                                  <Text
-                                    textAlign={""}
-                                    fontWeight={600}
-                                    color={"#FF2D55"}
-                                    fontSize={"2.6rem"}
-                                  >
-                                    ${product.product.price}
-                                  </Text>
-                                </FlexCol>
-                                <FlexCol
-                                  height={""}
-                                  justifyContent="space-around"
-                                  alignItems={""}
-                                >
-                                  <ButtonCircle onClick={() => onCart(product.product)}>1</ButtonCircle>
-                                  <button className={styles.btnDelete} onClick={() => removeProduct(product.product)}>
-                                    delete
-                                  </button>
-                                </FlexCol>
-                              </GridCol3>
-                            </Container>
-                          </Card>
-
-                          <BoxSquare className="is-active">
-                            <Flex height={"auto"} justifyContent={""} alignItems={""}>
-                              <button>
-                                <Image
-                                  src={iconMinus.src}
-                                  width={100}
-                                  height={100}
-                                  alt="icon minus"
-                                />
-                              </button>
-                              <Text
-                                textAlign={""}
-                                fontWeight={400}
-                                color={"#fff"}
-                                fontSize={"2rem"}
+                        <Card key={product.product.id} className={styles.card}>
+                          <Container>
+                            <Flex className={`${classOpacity}`} height={"auto"} justifyContent={""} alignItems={""}>
+                              <Image
+                                src={product.product.image}
+                                width={300}
+                                height={200}
+                                alt="product"
+                                className={styles.image}
+                              />
+                              <FlexCol
+                                height={""}
+                                justifyContent={""}
+                                alignItems={"left"}
                               >
-                                5
-                              </Text>
-                              <button>
-                                <Image
-                                  src={iconPlus.src}
-                                  width={100}
-                                  height={100}
-                                  alt="icon plus"
-                                />
-                              </button>
+                                <Text
+                                  textAlign={""}
+                                  fontWeight={400}
+                                  color={""}
+                                  fontSize={"1.8rem"}
+                                >
+                                  {product.product.name}
+                                </Text>
+                                <Text
+                                  textAlign={""}
+                                  fontWeight={600}
+                                  color={"#FF2D55"}
+                                  fontSize={"2.6rem"}
+                                >
+                                  ${product.product.price}
+                                </Text>
+                              </FlexCol>
+                              <FlexCol
+                                height={""}
+                                justifyContent="space-around"
+                                alignItems={""}
+                                className={`${classFlexBtn}`}
+                              >
+                                <ButtonCircle onClick={() => HandleModal()}>{product.quantity}</ButtonCircle>
+                                <button className={styles.btnDelete} onClick={() => removeProduct(product.product)}>
+                                  delete
+                                </button>
+                              </FlexCol>
                             </Flex>
-                          </BoxSquare>
-                        </>
+                            <BoxSquare className={`modal__ ${classModal} ${styles.modalContent}`}>
+                              <Flex height={"auto"} justifyContent={""} alignItems={""} className="modal__">
+                                <button onClick={() => addOrRemoveProduct(product.product.id, false)} className="modal__">
+                                  <Image
+                                    src={iconMinus.src}
+                                    width={100}
+                                    height={100}
+                                    alt="icon minus"
+                                    className="modal__"
+                                  />
+                                </button>
+                                <Text
+                                  textAlign={""}
+                                  fontWeight={400}
+                                  color={"#fff"}
+                                  fontSize={"2rem"}
+                                  className="modal__"
+                                >
+                                  {product.quantity}
+                                </Text>
+                                <button onClick={() => addOrRemoveProduct(product.product.id, true)} className="modal__btn-plus">
+                                  <Image
+                                    src={iconPlus.src}
+                                    width={100}
+                                    height={100}
+                                    alt="icon plus"
+                                    className="modal__"
+                                  />
+                                </button>
+                              </Flex>
+                            </BoxSquare>
+                          </Container>
+                        </Card>
                       ))
                     ) : (
                       <EmptyCart rowGap={""} />
@@ -299,14 +350,15 @@ const Home: FC<Props> = ({ disabled }) => {
                   ) : (
                     // list of searched products
                     searchedProduct.map((product: IProduct) => (
-                      <Card key={product.id}>
+                      <Card key={product.id} className={styles.card}>
                         <Container>
-                          <GridCol3>
+                          <Flex className={`${classOpacity}`} height={"auto"} justifyContent={""} alignItems={""}>
                             <Image
                               src={product.image}
                               width={300}
                               height={200}
-                              alt="complete order"
+                              alt="product"
+                              className={styles.image}
                             />
                             <FlexCol
                               height={"auto"}
@@ -330,19 +382,53 @@ const Home: FC<Props> = ({ disabled }) => {
                                 ${product.price}
                               </Text>
                             </FlexCol>
-                            {listProduct.length > 1 ? (
-                              <FlexCol
-                                height={""}
-                                justifyContent="space-around"
-                                alignItems={""}
-                              >
-                                <ButtonCircle onClick={() => onCart(product)}>
-                                  1
-                                </ButtonCircle>
-                                <button className={styles.btnDelete}>
-                                  delete
-                                </button>
-                              </FlexCol>
+                            {listProduct.length > 0 ? (
+                              <div>
+                                <FlexCol
+                                  height={""}
+                                  justifyContent="space-around"
+                                  alignItems={""}
+                                  className={`${classFlexBtn}`}
+                                >
+                                  <ButtonCircle onClick={() => HandleModal()}>
+                                    1
+                                  </ButtonCircle>
+                                  <button className={styles.btnDelete} onClick={() => removeProduct(product)}>
+                                    delete
+                                  </button>
+                                </FlexCol>
+                                <BoxSquare className={`modal__ ${classModal} ${styles.modalContent}`}>
+                                  <Flex height={"auto"} justifyContent={""} alignItems={""} className="modal__">
+                                    <button onClick={() => addOrRemoveProduct(product.id, false)} className="modal__">
+                                      <Image
+                                        src={iconMinus.src}
+                                        width={100}
+                                        height={100}
+                                        alt="icon minus"
+                                        className="modal__"
+                                      />
+                                    </button>
+                                    <Text
+                                      textAlign={""}
+                                      fontWeight={400}
+                                      color={"#fff"}
+                                      fontSize={"2rem"}
+                                      className="modal__"
+                                    >
+                                      {product.quantity}
+                                    </Text>
+                                    <button onClick={() => addOrRemoveProduct(product.id, true)} className="modal__btn-plus">
+                                      <Image
+                                        src={iconPlus.src}
+                                        width={100}
+                                        height={100}
+                                        alt="icon plus"
+                                        className="modal__"
+                                      />
+                                    </button>
+                                  </Flex>
+                                </BoxSquare>
+                              </div>
                             ) : (
                               <ButtonCircle onClick={() => onCart(product)}>
                                 <Image
@@ -353,7 +439,7 @@ const Home: FC<Props> = ({ disabled }) => {
                                 />
                               </ButtonCircle>
                             )}
-                          </GridCol3>
+                          </Flex>
                         </Container>
                       </Card>
                     ))
@@ -382,7 +468,7 @@ const Home: FC<Props> = ({ disabled }) => {
                         color={""}
                         fontSize={""}
                       >
-                        05/24/19
+                        &nbsp;{shippingDate}
                       </Span>
                     </Text>
                   </div>
@@ -477,7 +563,11 @@ const Home: FC<Props> = ({ disabled }) => {
                       </Flex>
                     </Container>
                   </BoxAuto>
-                  <Button disabled={disabled}>COMPLETE ORDER</Button>
+                  <Button disabled={enblOrder} backgroundColor={""} border={""} color={""}>
+                    <Link href="/order-complete">
+                    COMPLETE ORDER
+                    </Link>
+                  </Button>                    
                 </div>
                 {/* summary */}
               </GridCol2>

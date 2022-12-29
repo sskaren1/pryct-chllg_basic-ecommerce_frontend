@@ -1,14 +1,12 @@
-export interface propsMainLayout {
-  children: React.ReactElement;
-  title: string;
-  pageDescription: string;
-  imageFullUrl?: string; // ?:opcional
+export interface disabledBtn{
+  disabledBtn: boolean;
 }
 export interface IProduct {
   id: string;
   name: string;
   price: number;
   image: string;
+  disabled: boolean;
 }
 export interface newIProduct {
   product: IProduct;

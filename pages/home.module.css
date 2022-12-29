@@ -1,14 +1,28 @@
 .search {
   margin-bottom: 2rem;
 }
-
 .gridFull {
   height: calc(100% - 6rem);
 }
-
 .children {
   height: 100%;
   overflow: auto;
+}
+
+/* Card */
+.card {
+  position: relative;
+}
+.image {
+  width: 10rem;
+}
+
+/* modal */
+.modalContent {
+  position: absolute;
+  right: 30px;
+  bottom: 20px;
+  z-index: 5;
 }
 
 /* summary */
@@ -43,16 +57,3 @@
   font-size: 1.6rem;    
 }
 
-/* modal */
-.is-active{
-  display: flex;
-}
-.no-active{
-  display: none;
-}
-.modal-content {
-  max-width: 25rem !important;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 0.5rem;
-  padding: 1rem 1rem;
-}
