@@ -32,7 +32,7 @@ import styles from "./home.module.css";
 import { FullScreenLoading } from "./../components/ui/FullScreenLoading";
 import { EmptyCart } from "./../components/cart";
 // import interfaces
-import { IProduct, newIProduct, disabledBtn } from "./../interfaces/interfaces";
+import { IProduct, newIProduct } from "./../interfaces/interfaces";
 
 const GET_PRODUCTS = gql`
   query getProducts {
@@ -184,7 +184,7 @@ const Home = () => {
     let day = currentTime.getDate()
     let month = currentTime.getMonth() + 1
     let year = currentTime.getFullYear();  
-    if(month < 10){
+    if(month < 10){      
       setShippingDate(`${day}-0${month}-${year}`)
     }else{
       setShippingDate(`${day}-${month}-${year}`)
