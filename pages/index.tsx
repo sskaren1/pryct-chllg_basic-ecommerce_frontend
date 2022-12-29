@@ -102,17 +102,41 @@ const Home = () => {
 
     if (lengthSearch >= 3) {
       // filter of products
-      let productFilter = data.getProducts.filter((e: any) =>
-        e.name.toLowerCase().includes(search.toLowerCase())
+      const productMap:newIProduct = data.getProducts.map((product:IProduct)=>{
+        const newPrd:newIProduct = {
+          product,
+          quantity:1
+        }
+        return newPrd;
+      })
+      // console.log("productMap",productMap)
+      let productFilter = productMap.filter((product: newIProduct) =>        
+        product.product.name.toLowerCase().includes(search.toLowerCase())  
       );
-
       setSearchedProduct(productFilter);
-      // console.log(productFilter);
     } else if (search.length < 3) {
       return;
     }
-    // console.log(searchedProduct);
   };
+  // // read input search
+  // const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   let input = e.target.value;
+  //   setSearch(input);
+  //   let lengthSearch = input.length;
+
+  //   if (lengthSearch >= 3) {
+  //     // filter of products
+  //     let productFilter = data.getProducts.filter((e: any) =>
+  //       e.name.toLowerCase().includes(search.toLowerCase())
+  //     );
+  //     setSearchedProduct(productFilter);
+
+  //     // console.log(productFilter);
+  //   } else if (search.length < 3) {
+  //     return;
+  //   }
+  //   // console.log(searchedProduct);
+  // };
 
   // Para quitar el 1er array vacío creado del carrito
   const clean = () => {
@@ -345,12 +369,12 @@ const Home = () => {
                     )
                   ) : (
                     // list of searched products
-                    searchedProduct.map((product: IProduct) => (
-                      <Card key={product.id} className={styles.card}>
+                    searchedProduct.map((product: newIProduct) => (
+                      <Card key={product.product.id} className={styles.card}>
                         <Container>
                           <Flex className={`${classOpacity}`} height={"auto"} justifyContent={""} alignItems={""}>
                             <Image
-                              src={product.image}
+                              src={product.product.image}
                               width={300}
                               height={200}
                               alt="product"
@@ -367,7 +391,7 @@ const Home = () => {
                                 color={""}
                                 fontSize={""}
                               >
-                                {product.name}
+                                {product.product.name}
                               </Text>
                               <Text
                                 textAlign={""}
@@ -375,58 +399,25 @@ const Home = () => {
                                 color={"#FF2D55"}
                                 fontSize={"2.6rem"}
                               >
-                                ${product.price}
+                                ${product.product.price}
                               </Text>
                             </FlexCol>
                             {listProduct.length > 0 ? (
-                              <div>
-                                <FlexCol
-                                  height={""}
-                                  justifyContent="space-around"
-                                  alignItems={""}
-                                  className={`${classFlexBtn}`}
-                                >
-                                  <ButtonCircle onClick={() => HandleModal()}>
-                                    1
-                                  </ButtonCircle>
-                                  <button className={styles.btnDelete} onClick={() => removeProduct(product)}>
-                                    delete
-                                  </button>
-                                </FlexCol>
-                                <BoxSquare className={`modal__ ${classModal} ${styles.modalContent}`}>
-                                  <Flex height={"auto"} justifyContent={""} alignItems={""} className="modal__">
-                                    <button onClick={() => addOrRemoveProduct(product.id, false)} className="modal__">
-                                      <Image
-                                        src={iconMinus.src}
-                                        width={100}
-                                        height={100}
-                                        alt="icon minus"
-                                        className="modal__"
-                                      />
-                                    </button>
-                                    <Text
-                                      textAlign={""}
-                                      fontWeight={400}
-                                      color={"#fff"}
-                                      fontSize={"2rem"}
-                                      className="modal__"
-                                    >
-                                      {product.quantity}
-                                    </Text>
-                                    <button onClick={() => addOrRemoveProduct(product.id, true)} className="modal__btn-plus">
-                                      <Image
-                                        src={iconPlus.src}
-                                        width={100}
-                                        height={100}
-                                        alt="icon plus"
-                                        className="modal__"
-                                      />
-                                    </button>
-                                  </Flex>
-                                </BoxSquare>
-                              </div>
+                              <FlexCol
+                                height={""}
+                                justifyContent="space-around"
+                                alignItems={""}
+                                className={`${classFlexBtn}`}
+                              >
+                                <ButtonCircle onClick={() => HandleModal()}>
+                                  {product.quantity}
+                                </ButtonCircle>
+                                <button className={styles.btnDelete} onClick={() => removeProduct(product.product)}>
+                                  delete
+                                </button>
+                              </FlexCol>                                
                             ) : (
-                              <ButtonCircle onClick={() => onCart(product)}>
+                              <ButtonCircle onClick={() => onCart(product.product)}>
                                 <Image
                                   src={iconPlus.src}
                                   width={100}
@@ -436,6 +427,37 @@ const Home = () => {
                               </ButtonCircle>
                             )}
                           </Flex>
+                          <BoxSquare className={`modal__ ${classModal} ${styles.modalContent}`}>
+                            <Flex height={"auto"} justifyContent={""} alignItems={""} className="modal__">
+                              <button onClick={() => addOrRemoveProduct(product.product.id, false)} className="modal__">
+                                <Image
+                                  src={iconMinus.src}
+                                  width={100}
+                                  height={100}
+                                  alt="icon minus"
+                                  className="modal__"
+                                />
+                              </button>
+                              <Text
+                                textAlign={""}
+                                fontWeight={400}
+                                color={"#fff"}
+                                fontSize={"2rem"}
+                                className="modal__"
+                              >
+                                {product.quantity}
+                              </Text>
+                              <button onClick={() => addOrRemoveProduct(product.product.id, true)} className="modal__btn-plus">
+                                <Image
+                                  src={iconPlus.src}
+                                  width={100}
+                                  height={100}
+                                  alt="icon plus"
+                                  className="modal__"
+                                />
+                              </button>
+                            </Flex>
+                          </BoxSquare>
                         </Container>
                       </Card>
                     ))
