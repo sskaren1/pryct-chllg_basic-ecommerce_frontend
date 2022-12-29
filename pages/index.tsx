@@ -45,10 +45,6 @@ const GET_PRODUCTS = gql`
   }
 `;
 
-// interface Props {
-//   disabledBtn: boolean;
-// }
-
 const Home = () => {
   // get products of Graphql
   const { data, loading, error } = useQuery(GET_PRODUCTS);
