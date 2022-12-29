@@ -3,7 +3,7 @@ import { useState, useEffect, FC } from "react";
 // import next
 import Head from "next/head";
 import Image from "next/image";
-import Link from 'next/link'
+import Link from "next/link";
 // import apollo client
 import { useQuery, gql } from "@apollo/client";
 // import images
@@ -23,7 +23,12 @@ import {
   BoxAuto,
   BoxSquare,
 } from "../components/ui/layout";
-import { PropsButton,  Input, ButtonCircle, Button } from "../components/ui/form";
+import {
+  PropsButton,
+  Input,
+  ButtonCircle,
+  Button,
+} from "../components/ui/form";
 import { Card } from "../components/ui/surfaces";
 import { PropsTyph, Text, Span } from "../components/ui/typography";
 // import css modules
@@ -61,9 +66,9 @@ const Home = () => {
         id: "0",
         name: "",
         price: 0,
-        image: ""
+        image: "",
       },
-      quantity: 0
+      quantity: 0,
     },
   ]);
   // Para la orden
@@ -77,8 +82,8 @@ const Home = () => {
   const [shippingDate, setShippingDate] = useState("");
   // Para habilitar completar la orden
   const [enblOrder, setEnblOrder] = useState(true);
-  
-  // Para el modal 
+
+  // Para el modal
   const HandleModal = () => {
     if (modal == true) {
       setModal(false);
@@ -86,11 +91,11 @@ const Home = () => {
       setModal(true);
     }
   };
-  const handleClickOutside = (e:any) => {
-    if(e.target.className == "modal__"){
-      setModal(true)
+  const handleClickOutside = (e: any) => {
+    if (e.target.className == "modal__") {
+      setModal(true);
     } else {
-      setModal(false)
+      setModal(false);
     }
   };
 
@@ -102,67 +107,43 @@ const Home = () => {
 
     if (lengthSearch >= 3) {
       // filter of products
-      const productMap:newIProduct = data.getProducts.map((product:IProduct)=>{
-        const newPrd:newIProduct = {
-          product,
-          quantity:1
-        }
-        return newPrd;
-      })
-      // console.log("productMap",productMap)
-      let productFilter = productMap.filter((product: newIProduct) =>        
-        product.product.name.toLowerCase().includes(search.toLowerCase())  
+      let productFilter = data.getProducts.filter((e: any) =>
+        e.name.toLowerCase().includes(search.toLowerCase())
       );
+
       setSearchedProduct(productFilter);
+      // console.log(productFilter);
     } else if (search.length < 3) {
       return;
     }
+    // console.log(searchedProduct);
   };
-  // // read input search
-  // const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   let input = e.target.value;
-  //   setSearch(input);
-  //   let lengthSearch = input.length;
-
-  //   if (lengthSearch >= 3) {
-  //     // filter of products
-  //     let productFilter = data.getProducts.filter((e: any) =>
-  //       e.name.toLowerCase().includes(search.toLowerCase())
-  //     );
-  //     setSearchedProduct(productFilter);
-
-  //     // console.log(productFilter);
-  //   } else if (search.length < 3) {
-  //     return;
-  //   }
-  //   // console.log(searchedProduct);
-  // };
 
   // Para quitar el 1er array vacío creado del carrito
   const clean = () => {
     const filter = listProduct.filter((prd) => prd.product.id !== "0");
-    setListProduct(filter); 
-  }
+    setListProduct(filter);
+  };
 
   // Para añadir el producto seleccionado al carrito
   const onCart = (product: IProduct) => {
-    const newPrd:newIProduct = {
+    const newPrd: newIProduct = {
       product,
-      quantity:1
-    }
+      quantity: 1,
+    };
 
-    const filter = listProduct.filter((prd) => prd.product.id !== "0"); 
-    setListProduct([newPrd, ...filter]);      
+    const filter = listProduct.filter((prd) => prd.product.id !== "0");
+    setListProduct([newPrd, ...filter]);
   };
 
   // Para remover el producto seleccionado del carrito
   const removeProduct = (product: IProduct) => {
     const filter = listProduct.filter((prd) => prd.product.id !== product.id);
-    setListProduct(filter);      
+    setListProduct(filter);
   };
 
   // Para agregar o modificar la cantidad del producto seleccionado
-  const addOrRemoveProduct = (id: string, add: boolean) => {    
+  const addOrRemoveProduct = (id: string, add: boolean) => {
     const listProducts = listProduct.map((prd: newIProduct) => {
       if (prd.product.id === id) {
         if (add) {
@@ -183,10 +164,10 @@ const Home = () => {
 
   // Para calcular el precio total por los productos
   const calculatePriceTotal = () => {
-    let sumProd:number = 0;
-    let sumShipping:number = 0;
-    let sumTaxes:number = 0;
-    let sumTotal:number = 0;
+    let sumProd: number = 0;
+    let sumShipping: number = 0;
+    let sumTaxes: number = 0;
+    let sumTotal: number = 0;
     // console.log("listProduct",listProduct)
     listProduct.forEach((prd) => {
       const finalPrice = prd.quantity * prd.product.price;
@@ -196,47 +177,47 @@ const Home = () => {
     sumTaxes = 0.18 * sumProd;
     sumTotal = sumProd + sumShipping;
 
-    setProd(Number(sumProd.toFixed(2)));  
-    setShipping(Number(sumShipping.toFixed(2)))  
-    setTaxes(Number(sumTaxes.toFixed(2)))  
-    setTotal(Number(sumTotal.toFixed(2)))  
+    setProd(Number(sumProd.toFixed(2)));
+    setShipping(Number(sumShipping.toFixed(2)));
+    setTaxes(Number(sumTaxes.toFixed(2)));
+    setTotal(Number(sumTotal.toFixed(2)));
   };
 
   // Obtener el año actual
   const dateOrder = () => {
     let currentTime = new Date();
-    let day = currentTime.getDate()
-    let month = currentTime.getMonth() + 1
-    let year = currentTime.getFullYear();  
-    if(month < 10){      
-      setShippingDate(`${day}-0${month}-${year}`)
-    }else{
-      setShippingDate(`${day}-${month}-${year}`)
+    let day = currentTime.getDate();
+    let month = currentTime.getMonth() + 1;
+    let year = currentTime.getFullYear();
+    if (month < 10) {
+      setShippingDate(`${day}-0${month}-${year}`);
+    } else {
+      setShippingDate(`${day}-${month}-${year}`);
     }
-  }
+  };
 
   // Para habilitar completar la orden
-  const enableOrder = () =>{
-    console.log("total",total)
-    if (total >= 50){
-      setEnblOrder(false)
-    } else{
-      setEnblOrder(true)
+  const enableOrder = () => {
+    // console.log("total", total);
+    if (total >= 50) {
+      setEnblOrder(false);
+    } else {
+      setEnblOrder(true);
     }
-  }
+  };
 
-  useEffect(()=>{
-    clean()
-  },[])  
-  useEffect(()=>{
-    calculatePriceTotal()
-  },[listProduct])
-  useEffect(()=>{
-    dateOrder()
-  },[])
-  useEffect(()=>{
-    enableOrder()
-  },[total])
+  useEffect(() => {
+    clean();
+  }, []);
+  useEffect(() => {
+    calculatePriceTotal();
+  }, [listProduct]);
+  useEffect(() => {
+    dateOrder();
+  }, []);
+  useEffect(() => {
+    enableOrder();
+  }, [total]);
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, true);
     return () => {
@@ -285,10 +266,15 @@ const Home = () => {
                   {search.length == 0 ? (
                     // list of products in the cart
                     listProduct.length > 0 ? (
-                      listProduct.map((product: newIProduct) => ( 
+                      listProduct.map((product: newIProduct) => (
                         <Card key={product.product.id} className={styles.card}>
                           <Container>
-                            <Flex className={`${classOpacity}`} height={"auto"} justifyContent={""} alignItems={""}>
+                            <Flex
+                              className={`${classOpacity}`}
+                              height={"auto"}
+                              justifyContent={""}
+                              alignItems={""}
+                            >
                               <Image
                                 src={product.product.image}
                                 width={300}
@@ -324,15 +310,35 @@ const Home = () => {
                                 alignItems={""}
                                 className={`${classFlexBtn}`}
                               >
-                                <ButtonCircle onClick={() => HandleModal()}>{product.quantity}</ButtonCircle>
-                                <button className={styles.btnDelete} onClick={() => removeProduct(product.product)}>
+                                <ButtonCircle onClick={() => HandleModal()}>
+                                  {product.quantity}
+                                </ButtonCircle>
+                                <button
+                                  className={styles.btnDelete}
+                                  onClick={() => removeProduct(product.product)}
+                                >
                                   delete
                                 </button>
                               </FlexCol>
                             </Flex>
-                            <BoxSquare className={`modal__ ${classModal} ${styles.modalContent}`}>
-                              <Flex height={"auto"} justifyContent={""} alignItems={""} className="modal__">
-                                <button onClick={() => addOrRemoveProduct(product.product.id, false)} className="modal__">
+                            <BoxSquare
+                              className={`modal__ ${classModal} ${styles.modalContent}`}
+                            >
+                              <Flex
+                                height={"auto"}
+                                justifyContent={""}
+                                alignItems={""}
+                                className="modal__"
+                              >
+                                <button
+                                  onClick={() =>
+                                    addOrRemoveProduct(
+                                      product.product.id,
+                                      false
+                                    )
+                                  }
+                                  className="modal__"
+                                >
                                   <Image
                                     src={iconMinus.src}
                                     width={100}
@@ -350,7 +356,12 @@ const Home = () => {
                                 >
                                   {product.quantity}
                                 </Text>
-                                <button onClick={() => addOrRemoveProduct(product.product.id, true)} className="modal__btn-plus">
+                                <button
+                                  onClick={() =>
+                                    addOrRemoveProduct(product.product.id, true)
+                                  }
+                                  className="modal__btn-plus"
+                                >
                                   <Image
                                     src={iconPlus.src}
                                     width={100}
@@ -369,12 +380,17 @@ const Home = () => {
                     )
                   ) : (
                     // list of searched products
-                    searchedProduct.map((product: newIProduct) => (
-                      <Card key={product.product.id} className={styles.card}>
+                    searchedProduct.map((product: IProduct) => (
+                      <Card key={product.id} className={styles.card}>
                         <Container>
-                          <Flex className={`${classOpacity}`} height={"auto"} justifyContent={""} alignItems={""}>
+                          <Flex
+                            className={`${classOpacity}`}
+                            height={"auto"}
+                            justifyContent={""}
+                            alignItems={""}
+                          >
                             <Image
-                              src={product.product.image}
+                              src={product.image}
                               width={300}
                               height={200}
                               alt="product"
@@ -391,7 +407,7 @@ const Home = () => {
                                 color={""}
                                 fontSize={""}
                               >
-                                {product.product.name}
+                                {product.name}
                               </Text>
                               <Text
                                 textAlign={""}
@@ -399,7 +415,7 @@ const Home = () => {
                                 color={"#FF2D55"}
                                 fontSize={"2.6rem"}
                               >
-                                ${product.product.price}
+                                ${product.price}
                               </Text>
                             </FlexCol>
                             {listProduct.length > 0 ? (
@@ -409,15 +425,18 @@ const Home = () => {
                                 alignItems={""}
                                 className={`${classFlexBtn}`}
                               >
-                                <ButtonCircle onClick={() => HandleModal()}>
-                                  {product.quantity}
+                                <ButtonCircle onClick={() => onCart(product)}>
+                                  1
                                 </ButtonCircle>
-                                <button className={styles.btnDelete} onClick={() => removeProduct(product.product)}>
+                                <button
+                                  className={styles.btnDelete}
+                                  onClick={() => removeProduct(product)}
+                                >
                                   delete
                                 </button>
-                              </FlexCol>                                
+                              </FlexCol>
                             ) : (
-                              <ButtonCircle onClick={() => onCart(product.product)}>
+                              <ButtonCircle onClick={() => onCart(product)}>
                                 <Image
                                   src={iconPlus.src}
                                   width={100}
@@ -427,42 +446,11 @@ const Home = () => {
                               </ButtonCircle>
                             )}
                           </Flex>
-                          <BoxSquare className={`modal__ ${classModal} ${styles.modalContent}`}>
-                            <Flex height={"auto"} justifyContent={""} alignItems={""} className="modal__">
-                              <button onClick={() => addOrRemoveProduct(product.product.id, false)} className="modal__">
-                                <Image
-                                  src={iconMinus.src}
-                                  width={100}
-                                  height={100}
-                                  alt="icon minus"
-                                  className="modal__"
-                                />
-                              </button>
-                              <Text
-                                textAlign={""}
-                                fontWeight={400}
-                                color={"#fff"}
-                                fontSize={"2rem"}
-                                className="modal__"
-                              >
-                                {product.quantity}
-                              </Text>
-                              <button onClick={() => addOrRemoveProduct(product.product.id, true)} className="modal__btn-plus">
-                                <Image
-                                  src={iconPlus.src}
-                                  width={100}
-                                  height={100}
-                                  alt="icon plus"
-                                  className="modal__"
-                                />
-                              </button>
-                            </Flex>
-                          </BoxSquare>
                         </Container>
                       </Card>
                     ))
                   )}
-                </Box>               
+                </Box>
 
                 {/* summary */}
                 <div className={styles.summary}>
@@ -581,11 +569,14 @@ const Home = () => {
                       </Flex>
                     </Container>
                   </BoxAuto>
-                  <Button disabled={enblOrder} backgroundColor={""} border={""} color={""}>
-                    <Link href="/order-complete">
-                    COMPLETE ORDER
-                    </Link>
-                  </Button>                    
+                  <Button
+                    disabled={enblOrder}
+                    backgroundColor={""}
+                    border={""}
+                    color={""}
+                  >
+                    <Link href="/order-complete">COMPLETE ORDER</Link>
+                  </Button>
                 </div>
                 {/* summary */}
               </GridCol2>
